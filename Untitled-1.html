@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Создать новый аккаунт</title>
+  <style>
+    .form-group {
+      margin-bottom: 10px;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h2>Создать новый аккаунт</h2>
+  <form id="signup-form">
+    <div class="form-group">
+      <label for="username">Имя пользователя:</label>
+      <input type="text" id="username" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Пароль:</label>
+      <input type="password" id="password" required>
+    </div>
+    <div class="form-group">
+      <label for="confirm-password">Подтвердите пароль:</label>
+      <input type="password" id="confirm-password" required>
+    </div>
+    <p id="password-error" class="error"></p>
+    <button type="submit">Зарегистрироваться</button>
+  </form>
+
+  <script>
+    document.getElementById("signup-form").addEventListener("submit", function(event) {
+      event.preventDefault(); // Предотвращаем отправку формы
+
+      // Получаем значения полей формы
+      var username = document.getElementById("username").value;
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+      var confirmPassword = document.getElementById("confirm-password").value;
+
+      // Проверяем, совпадают ли пароль и подтверждение пароля
+      if (password !== confirmPassword) {
+        document.getElementById("password-error").textContent = "Пароль и подтверждение пароля не совпадают";
+        return; // Завершаем функцию, не выполняя остальной код
+      } else {
+        document.getElementById("password-error").textContent = ""; // Очищаем сообщение об ошибке
+      }
+
+      // Проверяем email на наличие "@" и английских букв
+      var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if (!email.match(emailPattern)) {
+        document.getElementById("password-error").textContent = "Пожалуйста, введите корректный email";
+        return; // Завершаем функцию, не выполняя остальной код
+      } else {
+        document.getElementById("password-error").textContent = ""; // Очищаем сообщение об ошибке
+      }
+
+      // Создаем объект с данными пользователя
+      var userData = {
+        username: username,
+        email: email,
+        password: password
+      };
+
+      // Преобразуем объект в формат JSON
+      var userDataJSON = JSON.stringify(userData);
+
+      // Выводим JSON-данные на экран
+      var outputDiv = document.createElement("div");
+      outputDiv.innerHTML = "<h3>Данные пользователя в формате JSON:</h3><pre>" + userDataJSON + "</pre>";
+      document.body.appendChild(outputDiv);
+    });
+  </script>
+</body>
+</html>
